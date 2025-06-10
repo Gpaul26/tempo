@@ -32,12 +32,13 @@ async fn main() -> Result<()> {
         node,
         node_exit_future: _,
     } = NodeBuilder::new(node_config)
-        .testing_node(tasks.executor())
+        .testing_node(task_manager.executor())
         .with_types::<EthereumNode>()
         .with_components(EthereumNode::components().consensus(MalachiteConsensusBuilder::new()))
-        .with_add_ons::<EthereumAddOns>()
+        .with_add_ons(EthereumAddOns::default())
         .launch_with_fn(|builder| {
-            let launcher = MalachiteNodeLauncher::new(tasks.executor(), builder.config().datadir());
+            let launcher =
+                MalachiteNodeLauncher::new(task_manager.executor(), builder.config().datadir());
             builder.launch_with(launcher)
         })
         .await?;
