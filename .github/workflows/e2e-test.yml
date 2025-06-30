@@ -16,22 +16,22 @@ jobs:
     name: e2e test
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    
+
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with:
           cache-on-failure: true
-      
-      - name: Build release binary
-        run: cargo build --release
-      
+
+      - name: Build binary
+        run: cargo build
+
       - name: Run E2E test
         run: |
           cd testnet
           ./scripts/e2e_test.sh 3 100 900  # 3 nodes, target block 100, 15 min timeout
-      
+
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v4
