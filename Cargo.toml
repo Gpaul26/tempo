@@ -7,9 +7,11 @@ rust-version = "1.88"
 members = [
   "bin/tempo",
   "bin/tempo-bench",
-  "crates/consensus",
+  "crates/chainspec",
   "crates/evm",
+  "crates/node",
   "crates/precompiles",
+  "crates/reth-malachite",
   "crates/telemetry-util",
 ]
 
@@ -64,11 +66,12 @@ lto = "fat"
 codegen-units = 1
 
 [workspace.dependencies]
-tempo-consensus = { path = "crates/consensus" }
+tempo-node = { path = "crates/node" }
+reth-malachite = { path = "crates/reth-malachite" }
+tempo-chainspec = { path = "crates/chainspec" }
 tempo-evm = { path = "crates/evm" }
 tempo-precompiles = { path = "crates/precompiles" }
 tempo-telemetry-util = { path = "crates/telemetry-util" }
-
 reth = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth" }
 reth-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-chainspec" }
 reth-cli = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-cli" }
@@ -105,6 +108,20 @@ reth-storage-api = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adf
 reth-tasks = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-tasks" }
 reth-tracing = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-tracing" }
 reth-trie-db = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-trie-db" }
+reth-node-api = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-node-api" }
+reth-rpc = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-rpc" }
+reth-rpc-api = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-rpc-api" }
+reth-rpc-eth-types = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-rpc-eth-types" }
+reth-rpc-server-types = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-rpc-server-types" }
+reth-network = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-network" }
+reth-transaction-pool = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-transaction-pool" }
+reth-engine-local = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-engine-local" }
+reth-ethereum-consensus = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "reth-ethereum-consensus" }
+alloy-network = { version = "1.0.12" }
+alloy-rpc-types-eth = { version = "1.0.12" }
+revm = { git = "https://github.com/paradigmxyz/reth", rev = "4db6adfedd5e1096f47de13ae7385bfa1d2fb1d4", package = "revm", features = [
+  "std",
+] }
 alloy = { version = "1.0.12", default-features = false }
 alloy-consensus = { version = "1.0.12", features = ["serde-bincode-compat"] }
 alloy-eips = { version = "1.0.12", features = ["serde"] }
