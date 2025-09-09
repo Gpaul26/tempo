@@ -13,6 +13,8 @@ use reth_evm::{
     },
 };
 
+use crate::frame::TempoFrameExt;
+
 /// The Tempo EVM context type.
 pub type TempoContext<DB> = Context<BlockEnv, TxEnv, CfgEnv, DB>;
 
@@ -96,7 +98,25 @@ where
         ItemOrResult<&mut Self::Frame, <Self::Frame as FrameTr>::FrameResult>,
         ContextError<DB::Error>,
     > {
-        self.0.frame_init(frame_input)
+        let is_first_init = self.0.frame_stack.index().is_none();
+        let new_frame = if is_first_init {
+            self.0.frame_stack.start_init()
+        } else {
+            self.0.frame_stack.get_next()
+        };
+
+        let ctx = &mut self.0.ctx;
+        let precompiles = &mut self.0.precompiles;
+        let res = TempoFrameExt::init_with_context(new_frame, ctx, precompiles, frame_input)?;
+
+        Ok(res.map_frame(|token| {
+            if is_first_init {
+                self.0.frame_stack.end_init(token);
+            } else {
+                self.0.frame_stack.push(token);
+            }
+            self.0.frame_stack.get()
+        }))
     }
 
     fn frame_run(&mut self) -> Result<FrameInitOrResult<Self::Frame>, ContextError<DB::Error>> {
@@ -152,5 +172,44 @@ where
             self.0.frame_stack.get(),
             &mut self.0.instruction,
         )
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use alloy_primitives::Address;
+    use reth_evm::revm::{
+        ExecuteEvm,
+        context::{ContextTr, TxEnv},
+        database::{CacheDB, EmptyDB},
+        primitives::hardfork::SpecId,
+        state::Bytecode,
+    };
+    use tempo_contracts::DEFAULT_7702_DELEGATE_ADDRESS;
+
+    #[test]
+    fn test_auto_7702_delegation() -> eyre::Result<()> {
+        let db = CacheDB::new(EmptyDB::new());
+        let ctx = TempoContext::new(db, SpecId::default());
+        let mut tempo_evm = TempoEvm::new(ctx, ());
+
+        let caller_0 = Address::random();
+        let tx_env = TxEnv {
+            caller: caller_0,
+            nonce: 0,
+            ..Default::default()
+        };
+        let res = tempo_evm.transact_one(tx_env)?;
+        assert!(res.is_success());
+
+        let ctx = tempo_evm.ctx();
+        let account = ctx.journal().account(caller_0).to_owned();
+        assert_eq!(
+            account.info.code.unwrap(),
+            Bytecode::new_eip7702(DEFAULT_7702_DELEGATE_ADDRESS),
+        );
+
+        Ok(())
     }
 }
