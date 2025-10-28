@@ -127,7 +127,7 @@ reth-ethereum-engine-primitives = { git = "https://github.com/paradigmxyz/reth",
 reth-evm = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
 reth-evm-ethereum = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
 reth-ethereum-forks = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
-reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
+reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a", default-features = false }
 reth-execution-types = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
 reth-metrics = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
 reth-node-builder = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
@@ -136,7 +136,7 @@ reth-node-ethereum = { git = "https://github.com/paradigmxyz/reth", rev = "020eb
 reth-network-peers = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
 reth-payload-builder = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
 reth-payload-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
-reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
+reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a", default-features = false }
 reth-provider = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
 reth-rpc-builder = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
 reth-rpc-convert = { git = "https://github.com/paradigmxyz/reth", rev = "020eb6a" }
